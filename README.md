@@ -1,6 +1,6 @@
 # toflow MCP Server
 
-[toflow.ai](https://toflow.ai) is an AI-native multi-channel outreach platform for sales teams. This MCP server gives AI assistants direct access to your toflow.ai workspace — CRM, email, LinkedIn, WhatsApp, sequences, enrichment, analytics, and AI automations.
+[toflow.ai](https://toflow.ai) is an AI-native multi-channel outreach platform for sales teams. This MCP server gives AI assistants direct access to your toflow.ai workspace — prospecting, multi-channel outreach (email, LinkedIn, WhatsApp), sequences, enrichment, CRM, and AI automations.
 
 ## Server URL
 
@@ -36,14 +36,16 @@ OAuth 2.0 (Authorization Code). Your MCP client will redirect to the toflow.ai l
 
 ## What you can do
 
-- **CRM** — create, search, update people, companies, and deals
-- **Email, LinkedIn & WhatsApp** — draft, send, reply, and track emails; message and connect on LinkedIn and WhatsApp
-- **Sequences** — build and manage multi-step outreach sequences, enroll contacts, view analytics
-- **Enrichment** — find verified emails and phone numbers from LinkedIn profiles; bulk enrich lists
-- **Lists** — organise contacts into lists with saved filtered views
-- **Tasks & Notes** — log calls, create tasks, and attach notes to CRM records
-- **Dashboards** — build reports and dashboards from CRM data
+- **Prospecting** — search for prospects using Sales Navigator-style filters; find prospects from your connections, post comments, and reactions
+- **Sequences** — build multi-step outreach sequences across email, LinkedIn, and WhatsApp; enroll contacts with personalised content; track open and reply rates
+- **Email** — draft, send, reply, forward, and track emails from connected accounts
+- **LinkedIn & WhatsApp** — message connections, send connection requests, and start conversations across channels
+- **Enrichment** — find verified emails and phone numbers from LinkedIn profiles; bulk enrich entire lists
+- **Lists** — organise prospects into lists with saved filtered views
 - **AI Automations** — create and run AI agents that operate on your workspace autonomously
+- **Tasks, Notes & Calls** — log calls, create follow-up tasks, and attach notes to any record
+- **Dashboards** — build custom reports and dashboards from your CRM data
+- **CRM** — create, search, and update people, companies, and deals
 
 ## Tool Reference
 
