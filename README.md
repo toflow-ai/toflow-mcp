@@ -5,7 +5,7 @@
 ## Server URL
 
 ```
-https://mcp.toflow.ai
+https://mcp.toflow.ai/mcp
 ```
 
 ## Authentication
@@ -21,35 +21,18 @@ OAuth 2.0 (Authorization Code). Your MCP client will redirect to the ToFlow logi
 
 ## Connect
 
-### Claude Desktop
-
-`~/Library/Application Support/Claude/claude_desktop_config.json`
+### Claude Desktop / Cursor / Windsurf
 
 ```json
 {
   "mcpServers": {
     "toflow": {
-      "command": "npx",
-      "args": ["mcp-remote", "https://mcp.toflow.ai"]
+      "type": "http",
+      "url": "https://mcp.toflow.ai/mcp"
     }
   }
 }
 ```
-
-### Cursor / Windsurf / Other clients
-
-```json
-{
-  "mcpServers": {
-    "toflow": {
-      "command": "npx",
-      "args": ["mcp-remote", "https://mcp.toflow.ai"]
-    }
-  }
-}
-```
-
-> Requires Node.js / `npx` installed.
 
 ## What you can do
 
@@ -69,7 +52,6 @@ See [docs/mcp-tools.md](docs/mcp-tools.md) for the full list of available tools.
 ## Requirements
 
 - A ToFlow account — [sign up at toflow.ai](https://toflow.ai)
-- Node.js (for `mcp-remote`)
 
 ## Support
 
