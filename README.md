@@ -1,6 +1,6 @@
 # toflow MCP Server
 
-[toflow.ai](https://toflow.ai) is an AI-native multi-channel outreach platform for sales teams. This MCP server gives AI assistants direct access to your toflow.ai workspace — CRM, email, sequences, enrichment, analytics, and AI automations.
+[toflow.ai](https://toflow.ai) is an AI-native multi-channel outreach platform for sales teams. This MCP server gives AI assistants direct access to your toflow.ai workspace — CRM, email, LinkedIn, WhatsApp, sequences, enrichment, analytics, and AI automations.
 
 ## Server URL
 
