@@ -1,6 +1,6 @@
 # toflow MCP Server
 
-[toflow](https://toflow.ai) is an AI-native multi-channel outreach platform for sales teams. This MCP server gives AI assistants direct access to your ToFlow workspace — CRM, email, sequences, enrichment, analytics, and AI automations.
+[toflow](https://toflow.ai) is an AI-native multi-channel outreach platform for sales teams. This MCP server gives AI assistants direct access to your toflow workspace — CRM, email, sequences, enrichment, analytics, and AI automations.
 
 ## Server URL
 
@@ -10,7 +10,7 @@ https://mcp.toflow.ai/mcp
 
 ## Authentication
 
-OAuth 2.0 (Authorization Code). Your MCP client will redirect to the ToFlow login page on first connect. Tokens are valid for 90 days.
+OAuth 2.0 (Authorization Code). Your MCP client will redirect to the toflow login page on first connect. Tokens are valid for 90 days.
 
 | Endpoint | URL |
 |---|---|
@@ -51,7 +51,7 @@ See [docs/mcp-tools.md](docs/mcp-tools.md) for the full list of available tools.
 
 ## Requirements
 
-- A ToFlow account — [sign up at toflow.ai](https://toflow.ai)
+- A toflow account — [sign up at toflow.ai](https://toflow.ai)
 
 ## Support
 
