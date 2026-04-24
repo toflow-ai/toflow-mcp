@@ -37,7 +37,7 @@ OAuth 2.0 (Authorization Code). Your MCP client will redirect to the toflow.ai l
 ## What you can do
 
 - **CRM** — create, search, update people, companies, and deals
-- **Email** — draft, send, reply, forward, and track emails from connected accounts
+- **Email, LinkedIn & WhatsApp** — draft, send, reply, and track emails; message and connect on LinkedIn and WhatsApp
 - **Sequences** — build and manage multi-step outreach sequences, enroll contacts, view analytics
 - **Enrichment** — find verified emails and phone numbers from LinkedIn profiles; bulk enrich lists
 - **Lists** — organise contacts into lists with saved filtered views
