@@ -53,7 +53,7 @@ See [docs/mcp-tools.md](docs/mcp-tools.md) for the full list of available tools.
 
 ## Requirements
 
-- A toflow.ai account — [sign up at toflow.ai](https://toflow.ai)
+- A toflow.ai account — [sign up free](https://app.toflow.ai/signup?utm_source=github&utm_medium=mcp&utm_campaign=toflow-mcp)
 
 ## Support
 
