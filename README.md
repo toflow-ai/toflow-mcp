@@ -5,7 +5,7 @@
 ## Server URL
 
 ```
-https://api.toflow.ai/mcp
+https://mcp.toflow.ai
 ```
 
 ## Authentication
@@ -14,10 +14,10 @@ OAuth 2.0 (Authorization Code). Your MCP client will redirect to the ToFlow logi
 
 | Endpoint | URL |
 |---|---|
-| Authorization | `https://api.toflow.ai/oauth/authorize` |
-| Token | `https://api.toflow.ai/oauth/token` |
-| Dynamic Registration | `https://api.toflow.ai/oauth/register` |
-| Discovery | `https://api.toflow.ai/.well-known/oauth-authorization-server` |
+| Authorization | `https://mcp.toflow.ai/oauth/authorize` |
+| Token | `https://mcp.toflow.ai/oauth/token` |
+| Dynamic Registration | `https://mcp.toflow.ai/oauth/register` |
+| Discovery | `https://mcp.toflow.ai/.well-known/oauth-authorization-server` |
 
 ## Connect
 
@@ -30,7 +30,7 @@ OAuth 2.0 (Authorization Code). Your MCP client will redirect to the ToFlow logi
   "mcpServers": {
     "toflow": {
       "command": "npx",
-      "args": ["mcp-remote", "https://api.toflow.ai/mcp"]
+      "args": ["mcp-remote", "https://mcp.toflow.ai"]
     }
   }
 }
@@ -43,7 +43,7 @@ OAuth 2.0 (Authorization Code). Your MCP client will redirect to the ToFlow logi
   "mcpServers": {
     "toflow": {
       "command": "npx",
-      "args": ["mcp-remote", "https://api.toflow.ai/mcp"]
+      "args": ["mcp-remote", "https://mcp.toflow.ai"]
     }
   }
 }
