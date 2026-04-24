@@ -1,4 +1,4 @@
-# ToFlow MCP — Tool Reference
+# toflow MCP — Tool Reference
 
 > Auto-generated from `docs/mcp-manifest.json`. Do not edit manually — run `make docs-mcp` to regenerate.
 
