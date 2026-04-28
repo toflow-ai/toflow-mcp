@@ -1,5 +1,7 @@
 # toflow MCP Server
 
+[![MCP Badge](https://lobehub.com/badge/mcp/toflow-ai-toflow-mcp)](https://lobehub.com/mcp/toflow-ai-toflow-mcp)
+
 [toflow.ai](https://toflow.ai) is an AI-native multi-channel outreach platform for sales teams. This MCP server gives AI assistants direct access to your toflow.ai workspace — prospecting, multi-channel outreach (email, LinkedIn, WhatsApp), sequences, enrichment, CRM, and AI automations.
 
 ## Server URL
