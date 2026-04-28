@@ -1,0 +1,17 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.toflow-ai/toflow",
+  "title": "ToFlow",
+  "description": "AI-native multi-channel outreach platform for sales teams. Connect your AI assistant to your toflow.ai workspace to automate prospecting, data enrichment, and multi-channel outreach across email, LinkedIn, and WhatsApp.",
+  "version": "1.0.0",
+  "repository": {
+    "url": "https://github.com/toflow-ai/toflow-mcp",
+    "source": "github"
+  },
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.toflow.ai/mcp"
+    }
+  ]
+}
