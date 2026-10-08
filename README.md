@@ -37,6 +37,27 @@ OAuth 2.0 (Authorization Code). Your MCP client will redirect to the toflow.ai l
 }
 ```
 
+### Grok Build
+
+```bash
+grok plugin install toflow-ai/toflow-mcp --trust
+```
+
+Installing as a plugin also adds the skills below, which teach Grok how to chain toflow's tools into full workflows (prospecting, sequencing, enrichment) instead of calling them one at a time.
+
+## Skills
+
+| Skill | Covers |
+|---|---|
+| `toflow-get-started` | Confirm workspace and connected sending accounts |
+| `toflow-prospect-and-list` | Search for prospects, build and manage lists/views |
+| `toflow-enrich-contacts` | Find verified emails and phone numbers |
+| `toflow-create-sequence` | Build multi-channel sequences and enroll people |
+| `toflow-manage-email` | Read, draft, send, and reply to email |
+| `toflow-manage-conversations` | LinkedIn and WhatsApp messaging |
+| `toflow-manage-crm` | People, companies, deals, notes, tasks, calls |
+| `toflow-build-report` | Query CRM data into reports and dashboards |
+
 ## What you can do
 
 - **Prospecting** — search for prospects using Sales Navigator-style filters; find prospects from your connections, post comments, and reactions
