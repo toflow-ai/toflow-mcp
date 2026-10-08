@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "toflow": {
+      "type": "http",
+      "url": "https://mcp.toflow.ai/mcp"
+    }
+  }
+}

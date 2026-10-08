@@ -1,0 +1,18 @@
+{
+  "name": "toflow",
+  "version": "0.1.0",
+  "description": "AI-native multi-channel B2B outreach and CRM platform. Prospect, enrich, and run outreach across email, LinkedIn, and WhatsApp.",
+  "author": {
+    "name": "toflow.ai",
+    "url": "https://toflow.ai"
+  },
+  "repository": "https://github.com/toflow-ai/toflow-mcp",
+  "license": "MIT",
+  "keywords": [
+    "toflow",
+    "toflow.ai",
+    "outreach",
+    "crm",
+    "sales automation"
+  ]
+}
