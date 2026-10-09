@@ -1,11 +1,11 @@
 ---
 name: toflow-manage-crm
-description: Create, search, and update CRM records (people, companies, deals) plus linked notes, tasks, and call logs. Use this whenever the user wants to look up, add, or edit CRM data, log a call, attach a note, or manage a deal pipeline.
+description: Create, search, and update CRM records (people, companies, deals), manage custom attributes, categories, and deal pipelines. Use this whenever the user wants to look up, add, or edit CRM data, or manage a deal's pipeline stage.
 license: MIT
 ---
 # toflow — Manage CRM Records
 
-Covers the core CRM: people, companies, deals, and the notes/tasks/calls attached to them.
+Covers the core CRM: people, companies, deals, custom attributes, and pipelines.
 
 ## Before creating or updating anything
 
@@ -15,21 +15,22 @@ Covers the core CRM: people, companies, deals, and the notes/tasks/calls attache
 
 ## Records
 
-- `create_record` / `update_record` (PATCH — only provided fields change) / `bulk_create` for batches.
-- `get_person` / `get_company` / `get_deal` return the full profile including linked records, notes, tasks, and (for people) enrichment status — use these to get the complete picture before deciding next steps.
+- `create_record` / `update_record` (only provided fields change) / `bulk_create` for batches.
+- `get_person` / `get_company` / `get_deal` return the full profile including linked records and enrichment status (for people) — use these to get the complete picture before deciding next steps.
 - `delete_person` / `delete_company` / `delete_deal` are soft-deletes — confirm with the user before calling any of them.
 - `list_company_categories` / `get_or_create_category` — check for an existing category before creating one, to avoid duplicates.
-- `list_pipelines` / `list_stages` — get valid IDs before `create_record`/`update_record` on a deal.
+- `list_pipelines` / `list_stages` — get valid IDs before setting a deal's stage via `create_record`/`update_record`.
 - `add_person_to_deal` / `remove_person_from_deal` — link/unlink a contact to an opportunity.
 
-## Notes, Tasks, Calls
+## Custom attributes
 
-- Notes: `list_notes` / `get_note` / `create_note` (link to a person, company, or deal) / `update_note` / `delete_note` (confirm before deleting).
-- Tasks: `list_tasks` / `get_task` / `create_task` (link to a record, assign, set due date) / `update_task` / `delete_task` (confirm before deleting).
-- Calls: `list_calls` / `get_call` / `log_call` (link to a person/company, include outcome and notes) / `update_call` / `delete_call` (confirm before deleting).
+- `list_attributes` / `get_attribute` — check existing attributes for a resource type before adding a new one.
+- `create_attribute` — add a new custom field. Confirm the resource type and field type with the user first; attributes are harder to remove cleanly than to add.
+- `update_attribute` / `delete_attribute` — confirm with the user before deleting, since existing record data on that field may be affected.
 
 ## Guardrails
 
 - Never call `create_record`/`update_record` without checking `record_schema` first for that resource type.
 - Never skip the `list_records` duplicate check before creating a person, company, or deal.
-- All deletes are destructive from the user's point of view even though they're soft-deletes internally — always confirm first.
+- All deletes are destructive from the user's point of view even though some are soft-deletes internally — always confirm first.
+- Don't create a new attribute that duplicates an existing one in meaning — check `list_attributes` first.

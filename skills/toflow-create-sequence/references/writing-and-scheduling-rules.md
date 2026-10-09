@@ -1,18 +1,18 @@
 # Message Writing Cheat Sheet
 
-Message-content quality only. For scheduling fields, sending accounts, node types, edges, and branching, call `get_sequence_creation_guide` / `get_sequence_schema` directly — those are the live source of truth, not this file.
+Message-content quality and cadence judgment only. For exact node type names, scheduling fields, sending accounts, and edges, call `get_sequence_creation_guide` / `get_sequence_schema` directly — those are the live source of truth, not this file.
 
 ## Template variables — what to put in messages
 
-- Safe to use freely: `{{person.first_name}}`, `{{person.last_name}}`, `{{person.job_title}}`
-- Always available: `{{workspace_member.first_name}}`, `{{workspace_member.last_name}}`, `{{workspace_member.name}}`
-- Ask before using: `{{company.name}}`, `{{company.website}}` — leads without linked company data go `invalid`
-- Never use: `{{person.description}}`
-- Full list: `get_sequence_schema`
+- Safe to use freely: person's first/last name, job title.
+- Always available: the sending workspace member's own name.
+- Ask before using: company name/website — leads without linked company data may fail personalization.
+- Never invent a variable value — resolve it from real person/company data or ask the user.
+- Full, current list: `get_sequence_schema`.
 
 ## Email content
 
-- Plain text vs HTML — always ask first. Plain (`plain_body`) = better deliverability, recommended for cold outreach; separate paragraphs with `\n\n`, never a single `\n` (Gmail hard-wraps ~76 chars). HTML (`body`) = better formatting. Pass only one field, never both.
+- Plain text vs HTML — always ask first. Plain text tends to have better deliverability for cold outreach; separate paragraphs with a blank line, never a single line break (most email clients hard-wrap short lines). HTML gives better formatting control. Pass only the field the chosen format uses, never both.
 - Subject: 2-6 words, lowercase, question format or specific insight — never generic.
 - Body: one value proposition, no fluff openers ("Hope this finds you well", "My name is...", "I work at..."), open with the point, end with a low-friction yes/no CTA.
 - No em dashes. No sign-off/signature — appended server-side.
@@ -22,41 +22,41 @@ Message-content quality only. For scheduling fields, sending accounts, node type
 - Open with a specific observation (their post, role change, company milestone) — not a pitch.
 - Open loop, don't reveal everything; ask one easy question, never a meeting ask in message one.
 - No superlatives ("best-in-class", "game-changing"), no pressure language ("act now", "limited time").
-- `send_linkedin_connection`: avoid including a message — 20-25/day without one vs 8-10/day with one attached. If the user insists on a message, keep it under ~200-300 chars, same as other LinkedIn connection messages.
-- `linkedin_inmail`: requires premium account (`sales_navigator`/`recruiter`/`premium`), subject required, under 400 chars, send Mon-Thu only. Don't use on an existing 1st-degree connection — use `linkedin_message` instead.
+- A connection request sent without an accompanying note generally gets a materially higher daily send allowance than one with a note attached — confirm current limits via `get_sequence_schema` rather than assuming a specific number, and ask the user before including a note.
+- Premium-tier LinkedIn messaging (InMail-style) usually has stricter rules than a direct message to an existing connection — subject required, length capped, send-day restrictions, and it should never replace a direct message to someone already connected. Confirm the exact constraints via `get_sequence_schema`.
 
-## Gaps between steps (`wait_value` / `wait_unit`)
+## Gaps between steps
 
-The tool schema only enforces `wait_value >= 1` — it gives no judgment on what to actually set. Propose these as defaults and confirm with the user, don't just apply them silently:
+The schema enforces only that the wait is a positive number — it gives no cadence judgment. Propose these as defaults and confirm with the user, don't apply them silently:
 
 | Between | Suggested gap | Why |
 |---|---|---|
 | Trigger → first outreach step | Same day, or 0-1 day | No reason to delay the opening touch once someone's enrolled |
 | Email → next email (follow-up) | 2-4 days | Enough time to notice/respond without going cold; standard cold-email cadence |
-| `send_linkedin_connection` → whatever follows its branch | 3-5 days | This is also the window LinkedIn gets to register acceptance before the branch resolves — too short and you're judging "not accepted" prematurely; too long and the sequence stalls |
-| `view_linkedin_profile` → next step | Same day to 1 day | It's a low-friction warm-up touch (a profile view), not a message — short gap is fine, the point is just to appear on their radar before the next action |
-| `linkedin_message` → next `linkedin_message` | 3-5 days | Similar cadence to email follow-ups; avoid stacking messages faster than a real person would |
-| `linkedin_inmail` → next step | 4-7 days | InMail credits are limited monthly and InMail is a heavier ask than a DM — no reason to rush the next touch |
-| `whatsapp_message` → next `whatsapp_message` | 1-2 days | WhatsApp is a faster, more immediate channel than email/LinkedIn — shorter gaps read as normal there, not pushy |
+| Connection request → whatever follows its branch | 3-5 days | Window for the recipient to accept before the branch resolves — too short and you're judging "not accepted" prematurely; too long and the sequence stalls |
+| Profile view → next step | Same day to 1 day | Low-friction warm-up touch, not a message — short gap is fine |
+| Direct message → next direct message | 3-5 days | Similar cadence to email follow-ups; avoid stacking messages faster than a real person would |
+| Premium/InMail-style message → next step | 4-7 days | Often credit-limited monthly and a heavier ask than a DM — no reason to rush the next touch |
+| WhatsApp message → next WhatsApp message | 1-2 days | Faster, more immediate channel than email/LinkedIn — shorter gaps read as normal there, not pushy |
 | Last outreach step → sequence end | N/A | No further gap needed once the final step has run |
 
 These are starting points, not fixed rules — always ask if the user has a preferred cadence before applying defaults, and adjust for context (e.g. a highly targeted ABM sequence may want longer gaps than a high-volume one).
 
 ## Sequence structure patterns by channel scope
 
-**Not enforced or fully sourced from the tool schema** — the schema only gives one worked pattern (quoted below); the rest extends it using the verified node type list. Treat these as starting points to propose, not fixed templates — always confirm the shape with the user before building.
+Starting points to propose, not fixed templates — always confirm the shape and exact available node types (via `get_sequence_schema`) with the user before building.
 
-**LinkedIn-only sequence** (source pattern, from `is_in_linkedin_network`'s own schema description):
+**LinkedIn-only sequence:**
 ```
-trigger → view_linkedin_profile (optional warm-up touch)
-        → is_in_linkedin_network
-             true  → linkedin_message (already connected, message directly)
-             false → send_linkedin_connection
-                        true  (accepted) → linkedin_message
-                        false (not accepted in time) → linkedin_inmail (needs premium account)
-                                                        or end here if no premium account
+trigger → profile view (optional warm-up touch)
+        → check existing connection status
+             already connected → direct message
+             not connected     → send connection request
+                                   accepted     → direct message
+                                   not accepted → premium/InMail-style message (if available)
+                                                  or end here if not available
 ```
-Check `is_in_linkedin_network` first rather than assuming not-connected — skips a redundant connection request to someone already in-network.
+Check connection status first rather than assuming not-connected — skips a redundant connection request to someone already in-network.
 
 **Email-only sequence** — no conditional nodes needed, just linear follow-ups:
 ```
@@ -67,22 +67,22 @@ Typically 2-4 emails total; more than that tends to fatigue rather than convert.
 **Multi-channel sequence** — email as primary, LinkedIn as a parallel or fallback touch:
 ```
 trigger → email (1st touch)
-        → view_linkedin_profile or send_linkedin_connection (LinkedIn touch alongside/after)
-             true/false branch as in the LinkedIn-only pattern above
+        → LinkedIn touch alongside/after (profile view or connection request)
+             branch as in the LinkedIn-only pattern above
         → email (follow-up, regardless of LinkedIn branch outcome)
-        → whatsapp_message (if a phone number is available and the user wants it as a channel)
+        → WhatsApp message (if a phone number is available and the user wants it as a channel)
 ```
 Don't default to using every channel just because the person has data for it — ask the user which channels they actually want in this sequence before drafting nodes for all of them.
 
 ## AI-personalized nodes (`ai_prompt`)
 
-- Any email / `send_linkedin_connection` / `linkedin_message` / `linkedin_inmail` / `whatsapp_message` node can carry `ai_prompt` instead of manual content.
-- Content is generated per-person at enrollment time — leave `subject`/`body`/`message` empty on that node.
+- Any outreach-step node can carry an `ai_prompt` instead of manual content.
+- Content is generated per-person at enrollment time — leave manual content fields empty on that node.
 - Never draft content yourself for these nodes, at creation or at enrollment.
 
 ## Avoid AI writing tells
 
-Applies to every piece of content you draft for a node — subjects, bodies, LinkedIn/InMail/WhatsApp messages — at both sequence-creation and enrollment-personalization time. A prospect who smells AI-written outreach disengages immediately, so this isn't a style preference, it's a deliverability concern.
+Applies to every piece of content you draft for a node — subjects, bodies, LinkedIn/WhatsApp messages — at both sequence-creation and enrollment-personalization time. A prospect who smells AI-written outreach disengages immediately, so this isn't a style preference, it's a deliverability concern.
 
 **Punctuation:**
 - No em dashes (—), anywhere, ever. Use a comma, a period, or rewrite the sentence.

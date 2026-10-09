@@ -9,9 +9,10 @@ license: MIT
 
 1. Call `list_datasets` first to see what data is available and the exact field names to use in the report configuration — don't guess at dataset/field names.
 2. Call `list_dashboards` to check whether a suitable dashboard already exists for this report, or `create_dashboard` if the user wants a dedicated new view.
-3. Always call `validate_and_preview_report` before saving — it validates the configuration and returns a 100-row data preview. Catch configuration errors and confirm the data looks right with the user before persisting anything.
-4. Call `create_report` only after the preview looks correct. This saves the report permanently to a dashboard.
-5. Use `run_report` to re-fetch the latest data for an existing saved report.
+3. Call `get_report_guide` before configuring the report — it covers the exact configuration shape (filters, grouping, chart type) for `validate_and_preview_report`/`create_report`.
+4. Always call `validate_and_preview_report` before saving — it validates the configuration and returns a data preview. Catch configuration errors and confirm the data looks right with the user before persisting anything.
+5. Call `create_report` only after the preview looks correct. This saves the report permanently to a dashboard.
+6. Use `run_report` to re-fetch the latest data for an existing saved report.
 
 ## Guardrails
 
