@@ -1,0 +1,18 @@
+{
+  "name": "toflow-plugin-marketplace",
+  "description": "toflow.ai plugin for Grok.",
+  "owner": {
+    "name": "toflow.ai"
+  },
+  "plugins": [
+    {
+      "name": "toflow",
+      "description": "AI-native multi-channel B2B outreach and CRM platform. Prospect, enrich, and run outreach across email, LinkedIn, and WhatsApp.",
+      "category": "sales",
+      "source": "./",
+      "homepage": "https://toflow.ai",
+      "keywords": ["toflow", "toflow.ai", "outreach", "crm", "sales automation"],
+      "domains": ["toflow.ai"]
+    }
+  ]
+}
