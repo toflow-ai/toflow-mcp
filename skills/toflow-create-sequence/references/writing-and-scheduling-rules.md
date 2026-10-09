@@ -22,8 +22,8 @@ Message-content quality and cadence judgment only. For exact node type names, sc
 - Open with a specific observation (their post, role change, company milestone) — not a pitch.
 - Open loop, don't reveal everything; ask one easy question, never a meeting ask in message one.
 - No superlatives ("best-in-class", "game-changing"), no pressure language ("act now", "limited time").
-- A connection request sent without an accompanying note generally gets a materially higher daily send allowance than one with a note attached — confirm current limits via `get_sequence_schema` rather than assuming a specific number, and ask the user before including a note.
-- Premium-tier LinkedIn messaging (InMail-style) usually has stricter rules than a direct message to an existing connection — subject required, length capped, send-day restrictions, and it should never replace a direct message to someone already connected. Confirm the exact constraints via `get_sequence_schema`.
+- `send_linkedin_connection`: omit the message unless the user explicitly requests one. LinkedIn allows roughly 20-25 requests/day without a message, dropping to 8-10/day with one attached.
+- `linkedin_inmail`: requires a premium LinkedIn account (Sales Navigator, Recruiter, or Premium Business) and consumes one InMail credit per send. Subject is required and must not be empty. Keep the message under ~400 characters (response rate drops noticeably above that) and send Monday-Thursday only. Never use it on someone already a 1st-degree connection — use `linkedin_message` instead.
 
 ## Gaps between steps
 
@@ -44,19 +44,19 @@ These are starting points, not fixed rules — always ask if the user has a pref
 
 ## Sequence structure patterns by channel scope
 
-Starting points to propose, not fixed templates — always confirm the shape and exact available node types (via `get_sequence_schema`) with the user before building.
+Starting points to propose, not fixed templates — always confirm the shape and exact available node types (via `get_sequence_schema`) with the user before building. Branching is only available on `send_linkedin_connection` and `is_in_linkedin_network` (`true`/`false` edges, branches never reconverge).
 
 **LinkedIn-only sequence:**
 ```
-trigger → profile view (optional warm-up touch)
-        → check existing connection status
-             already connected → direct message
-             not connected     → send connection request
-                                   accepted     → direct message
-                                   not accepted → premium/InMail-style message (if available)
-                                                  or end here if not available
+trigger → view_linkedin_profile (optional warm-up touch)
+        → is_in_linkedin_network
+             true  → linkedin_message (already connected, message directly)
+             false → send_linkedin_connection (at most one node in this branch)
+                        true  (accepted)     → linkedin_message
+                        false (not accepted) → linkedin_inmail (needs premium account)
+                                                or end here if no premium account
 ```
-Check connection status first rather than assuming not-connected — skips a redundant connection request to someone already in-network.
+Check `is_in_linkedin_network` first rather than assuming not-connected — skips a redundant connection request to someone already in-network.
 
 **Email-only sequence** — no conditional nodes needed, just linear follow-ups:
 ```
@@ -67,10 +67,10 @@ Typically 2-4 emails total; more than that tends to fatigue rather than convert.
 **Multi-channel sequence** — email as primary, LinkedIn as a parallel or fallback touch:
 ```
 trigger → email (1st touch)
-        → LinkedIn touch alongside/after (profile view or connection request)
-             branch as in the LinkedIn-only pattern above
+        → view_linkedin_profile or send_linkedin_connection (LinkedIn touch alongside/after)
+             true/false branch as in the LinkedIn-only pattern above
         → email (follow-up, regardless of LinkedIn branch outcome)
-        → WhatsApp message (if a phone number is available and the user wants it as a channel)
+        → whatsapp_message (if a phone number is available and the user wants it as a channel)
 ```
 Don't default to using every channel just because the person has data for it — ask the user which channels they actually want in this sequence before drafting nodes for all of them.
 

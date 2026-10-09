@@ -9,18 +9,22 @@ Find the right people before reaching out, then stage them in a list so they're 
 
 ## Part 1 — Finding prospects on LinkedIn
 
-1. Call `get_linkedin_search_guide` and `linkedin_search_parameters` before `search_linkedin` so you use valid filter fields (role, seniority, company size, industry, location, etc.) — don't guess parameter names.
-2. Call `search_linkedin` with the confirmed filters. Combine multiple filters to narrow results rather than returning a huge unfiltered set, and confirm the target persona with the user before running a broad search.
-3. For warm leads, use `list_linkedin_connections` (optionally with `check_linkedin_connection` to confirm connection status with a specific person) instead of cold search.
-4. For intent-based prospecting from a specific post: `get_linkedin_post` / `get_linkedin_post_comments` / `get_linkedin_post_reactions` / `get_linkedin_person_posts` surface people who engaged with relevant content — these are warmer than cold search since they've already shown topical interest. `react_to_linkedin_post` / `comment_on_linkedin_post` let you engage first if the user wants to warm up a prospect before reaching out directly.
-5. Show the user a sample of results before staging a large batch into a list.
+1. Call `list_message_accounts(provider_type='linkedin')` to get the connected account, and `get_linkedin_search_guide` for the full filter reference. For any filter needing an ID (location, industry, company, school, etc.), call `linkedin_search_parameters` first to resolve the correct IDs rather than guessing them.
+2. Choose the API mode with the user: `classic` (keywords, location, industry, company, network distance, company size, etc.) or `sales_navigator` (richer — seniority, function, tenure, revenue, technologies, recent activity, saved/recent searches, include/exclude on most filters) — Sales Navigator requires that tier of LinkedIn account.
+3. Call `search_linkedin` with the confirmed filters, and pass the returned `cursor` back on the next call to paginate. Never mention internal fields like `api`, `category`, `message_account_id`, or `cursor` to the user. Respect the account's own pacing — there's a jittered gap between pages and a capped number of pages per 15 minutes and per 24 hours; if rate-limited, stop and tell the user when it'll reset rather than retrying immediately.
+4. When importing a result into the CRM, map fields explicitly: `name` → `first_name`/`last_name`, `headline` → `job_title`, `public_profile_url` → `linkedin_url`. Skip any result with a null `public_identifier`.
+5. For warm leads, use `list_linkedin_connections` (optionally with `check_linkedin_connection` to confirm connection status with a specific person) instead of cold search.
+6. For intent-based prospecting from a specific post: `get_linkedin_post` / `get_linkedin_post_comments` / `get_linkedin_post_reactions` / `get_linkedin_person_posts` surface people who engaged with relevant content — these are warmer than cold search since they've already shown topical interest. `react_to_linkedin_post` / `comment_on_linkedin_post` let you engage first if the user wants to warm up a prospect before reaching out directly.
+7. Show the user a sample of results before staging a large batch into a list.
 
 ## Part 2 — Signal agents (ongoing, automatic prospecting)
 
-Use this when the user wants prospects to be surfaced continuously rather than via a one-off search.
+Use this when the user wants prospects to be surfaced continuously rather than via a one-off search. Signal types include things like `linkedin_job_change`, `linkedin_hiring`, `linkedin_profile_viewers`, and `linkedin_connections` — confirm the current set with the user's use case in mind.
 
-1. Call `get_signal_agent_guide` before `setup_signal_agent` — it's the source of truth for what signals are configurable and how they map to lists.
-2. Call `get_signal_items` to review what a configured signal agent has surfaced so far.
+1. Call `get_signal_agent_guide(signal_type=...)` before `setup_signal_agent` for the specific signal type — it returns that signal's prerequisites (e.g. `linkedin_job_change` requires a Sales Navigator account, not Basic/Premium), its ICP fields and allowed values, and which account ID to pass.
+2. Call `list_connected_accounts` to get the right account ID for the signal (per the guide's prerequisites) before setup.
+3. Collect the ICP fields the guide asks for from the user — don't invent values for fields it says to ask about.
+4. Call `get_signal_items` to review what a configured signal agent has surfaced so far.
 
 ## Part 3 — Building and managing lists
 
@@ -31,7 +35,7 @@ Use this when the user wants prospects to be surfaced continuously rather than v
    - `add_companies_to_list` — companies, identified by LinkedIn URL or website. Same auto-create behavior.
    - `add_records_to_list` — for records that already exist in the CRM by ID.
 4. Use `get_list_items` to inspect what's in a list before enriching or sequencing it, and `remove_from_list` to drop entries (does not delete the underlying CRM record).
-5. For saved, reusable filtered views of a list (not one-off searches), call `get_view_creation_guide` before `create_view`, then use `list_views` / `get_view` / `update_view` to manage them.
+5. For saved, reusable filtered views of a list (not one-off searches): call `record_schema` for the list's resource type first to get real attribute titles, then `get_view_creation_guide` before `create_view`. By default all fields are visible — only pass `visible_fields`/`column_order` if the user wants a focused subset, and only pass `filters` (same syntax as `filter_guide`) if they want it pre-filtered. `layout: 'kanban'` is valid only for deal lists. Use `list_views` / `get_view` / `update_view` to manage existing views.
 
 ## Guardrails
 

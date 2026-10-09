@@ -25,9 +25,11 @@ Get verified contact data before reaching out. Enrichment is asynchronous for ph
 
 Use this when the user wants something beyond email/phone — e.g. deriving a company's tech stack, a person's likely pain point, or any field the standard enrichment tools don't cover.
 
-1. Call `get_ai_enrichment_guide` before `create_ai_enrichment` — it's the source of truth for how to define the enrichment prompt/target field.
-2. Call `list_ai_enrichments` to check whether a similar enrichment already exists before creating a new one.
-3. Call `run_ai_enrichment` to execute it, `get_ai_enrichment` to inspect a specific enrichment's config/results, and `update_ai_enrichment` to adjust its prompt or target field.
+1. Call `get_ai_enrichment_guide` before `create_ai_enrichment`. Present the model tiers it returns (they trade cost per run for capability — cheapest tier for simple extraction like job title, mid tiers for scoring/classification, a higher tier for ICP-fit/persona research, top tier for complex reasoning) and get the user's explicit choice before drafting any prompts.
+2. Call `list_attributes` for the resource type to find the field the output should write into (`target_attribute_id`). If no suitable attribute exists, ask the user whether to create one (and what type — text/select/number/boolean) via `create_attribute` before proceeding.
+3. Call `list_ai_enrichments` to check whether a similar enrichment already exists before creating a new one.
+4. Show the full draft (model, cost, prompt, every field mapping with its target attribute) and get explicit approval before calling `create_ai_enrichment`.
+5. Call `run_ai_enrichment` to execute it, `get_ai_enrichment` to inspect a specific enrichment's config/results, and `update_ai_enrichment` to adjust its prompt or target field.
 
 ## Guardrails
 

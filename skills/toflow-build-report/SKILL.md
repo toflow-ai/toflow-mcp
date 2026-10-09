@@ -7,11 +7,11 @@ license: MIT
 
 ## Steps
 
-1. Call `list_datasets` first to see what data is available and the exact field names to use in the report configuration — don't guess at dataset/field names.
+1. Call `list_datasets` first and use only field names it returns — never guess. If the user's request is ambiguous (unclear metric, grouping, or filter), ask before proceeding.
 2. Call `list_dashboards` to check whether a suitable dashboard already exists for this report, or `create_dashboard` if the user wants a dedicated new view.
-3. Call `get_report_guide` before configuring the report — it covers the exact configuration shape (filters, grouping, chart type) for `validate_and_preview_report`/`create_report`.
-4. Always call `validate_and_preview_report` before saving — it validates the configuration and returns a data preview. Catch configuration errors and confirm the data looks right with the user before persisting anything.
-5. Call `create_report` only after the preview looks correct. This saves the report permanently to a dashboard.
+3. Call `get_report_guide` for the exact configuration shape. In short: `query` takes `group_by` (groupable fields), `metrics` (`{field, function, alias}` with `count`/`count_distinct`/`sum`/`avg`/`min`/`max`), `select_fields`, `order_by`, and `limit`; `chart` takes `chart_type` (`line`/`bar`/`area`/`pie`/`scatter`/`table`/`kpi`/`funnel`/`heatmap`), `x_axis`, `y_axis`, `color_field`; `filters` is a list of `{field, operator, value}` (`eq`, `contains`, `in`, `between`, `before`/`after`, `is_null`, etc.).
+4. Always call `validate_and_preview_report` before saving. Show the preview rows to the user and ask if it looks right before saving — if `valid=false`, explain the errors in plain terms and don't just retry blindly.
+5. Call `create_report` only after the user has seen the preview and confirmed. This saves the report permanently to a dashboard.
 6. Use `run_report` to re-fetch the latest data for an existing saved report.
 
 ## Guardrails
