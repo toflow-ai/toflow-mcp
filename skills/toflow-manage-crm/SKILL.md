@@ -9,9 +9,9 @@ Covers the core CRM: people, companies, deals, custom attributes, and pipelines.
 
 ## Before creating or updating anything
 
-1. Call `record_schema` (or `get_resource_schema` for custom fields) for the resource type (`person`, `company`, `deal`) to get valid field names and required values — never guess a field name.
-2. Call `filter_guide` before any `list_records` call that needs a non-trivial filter — it covers filter/sort syntax and available operators.
-3. Call `list_records` with filters/search first to check whether the record already exists — avoid creating duplicates. Prefer `add_people_to_list` / `add_companies_to_list` (see `toflow-prospect-and-list`) over `create_record` when the source is a LinkedIn URL — those auto-create and dedupe.
+1. Call `record_schema` (or `get_resource_schema` for custom fields) for the resource type (`person`, `company`, `deal`) to get the real attribute titles, types, and which are required — never guess a field name. Pass attribute titles as the keys in the `attributes` dict on `create_record`/`update_record`; for `select`/`multiselect` fields, pass the value from `allowed_values`, not the display label.
+2. Call `filter_guide` before any `list_records` call that needs a non-trivial filter. Filters are a list of `FilterGroup` objects (`{"logic": "and"|"or", "conditions": [{"field": "<Attribute Title>", "operator": "...", "value": ...}]}`) — always wrap conditions in an explicit group rather than passing flat conditions. Operators: `is`, `is_not`, `contains`, `not_contains`, `is_empty`, `is_not_empty`, `gt`, `lt`, `gte`, `lte`, `in`. `sort` is a comma-separated `"<Attribute Title>:asc|desc"` string. If the user names a saved view, resolve it to a `view_id` via `list_views` rather than guessing.
+3. Call `list_records` with filters/search first to check whether the record already exists — avoid creating duplicates. If you already have record IDs, pass them via `ids` rather than looping `get_person`/`get_company`/`get_deal`. Prefer `add_people_to_list` / `add_companies_to_list` (see `toflow-prospect-and-list`) over `create_record` when the source is a LinkedIn URL — those auto-create and dedupe.
 
 ## Records
 
