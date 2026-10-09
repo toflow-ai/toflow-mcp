@@ -2,32 +2,56 @@
 
 **Server URL:** `https://mcp.toflow.ai/mcp`
 
-**115 tools** across 13 categories.
+**132 tools** across 14 categories.
 
 ---
 
 ## Prospecting
 
-Find the right prospects and gather intent signals before reaching out.
+| Tool | Description |
+|---|---|
+| `get_linkedin_search_guide` | Workflow, rate limits, and full filter reference for search_linkedin. |
+| `linkedin_search_parameters` | Resolve filter values (location, industry, company, school, etc.) to the IDs search_linkedin needs. |
+| `search_linkedin` | Search for prospects using classic or Sales Navigator-style filters (role, company, location, industry, and more). |
+| `list_linkedin_connections` | Get prospects from your existing LinkedIn connections. |
+| `check_linkedin_connection` | Check connection status with a specific LinkedIn profile. |
+| `get_linkedin_person_posts` | Get recent LinkedIn posts by a specific person. |
+| `get_linkedin_post` | Get a single LinkedIn post by URL. |
+| `get_linkedin_post_comments` | Get comments on a LinkedIn post — a source of engaged prospects. |
+| `get_linkedin_post_reactions` | Get reactions on a LinkedIn post — a source of engaged prospects. |
+| `react_to_linkedin_post` | React to a LinkedIn post. |
+| `comment_on_linkedin_post` | Comment on a LinkedIn post. |
 
-- Search for prospects using Sales Navigator-style filters (role, company, location, industry, and more)
-- Get prospects from your existing connections
-- Find prospects from post comments and reactions on popular content
+## Signal Agents
+
+Ongoing, automatic prospecting — surfaces new prospects continuously instead of via one-off search.
+
+| Tool | Description |
+|---|---|
+| `get_signal_agent_guide` | Setup guide for a specific signal type — prerequisites, ICP fields, and allowed values. |
+| `setup_signal_agent` | Configure a signal agent (`linkedin_job_change`, `linkedin_hiring`, `linkedin_profile_viewers`, `linkedin_connections`). |
+| `get_signal_items` | Review what a configured signal agent has surfaced. |
 
 ## Sequences
 
 | Tool | Description |
 |---|---|
+| `get_sequence_creation_guide` | Mandatory step-by-step guide for creating a sequence. |
 | `get_sequence_schema` | Get node types, config fields, and template variables for sequences. |
 | `list_sequences` | List sequences in the workspace with pagination. |
+| `list_sequence_templates` | List available sequence templates to start from. |
 | `get_sequence` | Get full details of a sequence including all nodes and edges. |
 | `create_sequence` | Create a sequence with any mix of node types. |
 | `update_sequence` | Update a sequence's name, scheduling config, or full structure (nodes + edges). |
+| `get_enroll_in_sequence_guide` | Mandatory step-by-step guide for enrolling a person in a sequence. |
 | `enroll_in_sequence` | Enroll a person in a sequence with freshly generated, personalized content. |
 | `get_enrollment` | Get details of a specific sequence enrollment. |
 | `list_enrollments` | List sequence enrollments filtered by sequence or person, with optional status filter. |
-| `update_enrollment` | Update a sequence enrollment. |
+| `get_update_enrollment_guide` | Guide for updating a sequence enrollment's status or node content. |
+| `update_enrollment` | Update a sequence enrollment's status or node content. |
+| `set_enrollment_node_content` | Set personalized content for a specific pending node in an enrollment. |
 | `retry_enrollment` | Retry a failed or invalid sequence enrollment. |
+| `resolve_invalid_enrollments` | Get guidance for fixing enrollments that came back invalid. |
 | `get_sequence_analytics` | Get detailed analytics and conversion funnel for a sequence. |
 | `list_connected_accounts` | List all connected sending accounts for the current user. |
 | `get_account_load_stats` | Get current load stats for sending accounts. |
@@ -36,9 +60,9 @@ Find the right prospects and gather intent signals before reaching out.
 
 | Tool | Description |
 |---|---|
-| `inbox_manager_config` | Inbox Manager configuration for the current workspace and member. |
 | `list_emails` | List emails in the workspace with optional filters. |
 | `get_email` | Get a single email by ID — returns subject, body, recipients, status, and thread info. |
+| `get_draft_email_guide` | Mandatory step-by-step guide for drafting an email. |
 | `draft_email` | Draft an email in the workspace. |
 | `send_email` | Send a drafted email by its ID. |
 | `reply_to_email` | Reply to or follow up on an existing email thread. |
@@ -53,6 +77,12 @@ Find the right prospects and gather intent signals before reaching out.
 
 | Tool | Description |
 |---|---|
+| `send_connection_request` | Send a LinkedIn connection request, with an optional note. |
+| `send_linkedin_message` | Send a direct message to a LinkedIn connection. |
+| `send_inmail` | Send a premium/InMail-style LinkedIn message (requires a premium account). |
+| `send_whatsapp_message` | Send a WhatsApp message. |
+| `send_draft_message` | Send a previously generated message draft. |
+| `delete_message_draft` | Delete a message draft that's no longer needed. |
 | `list_message_threads` | List LinkedIn and WhatsApp conversation threads. |
 | `get_message_thread` | Get full message history for a LinkedIn or WhatsApp thread. |
 | `list_message_accounts` | List connected LinkedIn and WhatsApp accounts. |
@@ -72,6 +102,19 @@ Find the right prospects and gather intent signals before reaching out.
 | `bulk_enrich_list` | Enrich all people in a list for a given enrichment type. |
 | `estimate_bulk_enrich_list` | Show the credit cost of bulk_enrich_list before it runs. |
 
+## AI Enrichment
+
+Custom, AI-derived fields beyond standard email/phone enrichment.
+
+| Tool | Description |
+|---|---|
+| `get_ai_enrichment_guide` | Guide for creating an AI enrichment — model options, template variables, and approval steps. |
+| `create_ai_enrichment` | Create a custom AI enrichment that writes its output into a CRM attribute. |
+| `list_ai_enrichments` | List configured AI enrichments. |
+| `get_ai_enrichment` | Get a specific AI enrichment's configuration and results. |
+| `update_ai_enrichment` | Update an AI enrichment's prompt or target field. |
+| `run_ai_enrichment` | Execute an AI enrichment. |
+
 ## Lists & Views
 
 | Tool | Description |
@@ -87,27 +130,9 @@ Find the right prospects and gather intent signals before reaching out.
 | `remove_from_list` | Remove one or more resources from a list by their CRM IDs. |
 | `list_views` | List all saved views for a resource type or a specific list. |
 | `get_view` | Get full details of a saved view by its ID. |
+| `get_view_creation_guide` | Step-by-step guide for creating a saved view. |
 | `create_view` | Create a new saved view for a specific list. |
 | `update_view` | Update an existing view's configuration. |
-
-## AI Automations
-
-| Tool | Description |
-|---|---|
-| `list_subagents` | List all enabled sub-agents in the workspace. |
-| `get_subagent` | Get the full configuration of a sub-agent by ID. |
-| `create_subagent` | Create a new sub-agent for this workspace. |
-| `update_subagent` | Update an existing sub-agent. |
-| `get_worker_instructions` | Get instructions for human-initiated subagent sessions. |
-| `get_executor_instructions` | Get instructions for automated/scheduled execution of pending subagent tasks. |
-| `get_available_mcp_tools` | List all available MCP tools with names and descriptions. |
-| `bulk_create_subagent_tasks` | Bulk-create multiple tasks for a single sub-agent in one call. |
-| `list_subagent_tasks` | List sub-agent tasks, optionally filtered by subagent_id and status. |
-| `get_subagent_task` | Get full details of a sub-agent task including execution log. |
-| `claim_subagent_task` | Claim an open task to start working on it. |
-| `append_task_log` | Append a log entry to a running task's execution log. |
-| `complete_subagent_task` | Mark a task as completed with optional result data. |
-| `fail_subagent_task` | Mark a task as failed with an error message. |
 
 ## Tasks
 
@@ -146,7 +171,8 @@ Find the right prospects and gather intent signals before reaching out.
 | `list_datasets` | List available datasets and their exact field names. |
 | `list_dashboards` | List all dashboards in the workspace. |
 | `create_dashboard` | Create a new dashboard. |
-| `validate_and_preview_report` | Validate a report configuration and return a 100-row data preview. |
+| `get_report_guide` | Guide for validate_and_preview_report — prerequisites, query/chart/filter syntax. |
+| `validate_and_preview_report` | Validate a report configuration and return a data preview. |
 | `create_report` | Save a report permanently to a dashboard. |
 | `run_report` | Execute a saved report and return its data rows. |
 
@@ -160,7 +186,7 @@ Find the right prospects and gather intent signals before reaching out.
 | `create_record` | Create a new CRM record (person, company, or deal). |
 | `update_record` | Update fields on an existing CRM record — PATCH, only provided fields are changed. |
 | `bulk_create` | Bulk create CRM records (companies, people, or deals). |
-| `get_resource_schema` | Get the attribute schema for a resource type (company, person, deal). |
+| `get_resource_schema` | Get the attribute schema for a resource type (company, person, deal), including custom attributes. |
 | `get_person` | Get a single person (contact) by ID with full CRM profile including all attributes. |
 | `delete_person` | Soft-delete a person from the workspace. |
 | `get_company` | Get a single company by ID with full profile. |
@@ -173,6 +199,11 @@ Find the right prospects and gather intent signals before reaching out.
 | `list_stages` | List all stages for a given pipeline. |
 | `add_person_to_deal` | Associate a person (contact) with a deal. |
 | `remove_person_from_deal` | Remove a person's association with a deal. |
+| `list_attributes` | List custom attributes for a resource type. |
+| `get_attribute` | Get a single custom attribute's configuration. |
+| `create_attribute` | Create a new custom attribute for a resource type. |
+| `update_attribute` | Update an existing custom attribute. |
+| `delete_attribute` | Delete a custom attribute. |
 
 ## Workspace
 

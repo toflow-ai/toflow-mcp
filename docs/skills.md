@@ -1,6 +1,6 @@
 # toflow.ai MCP — Skills Reference
 
-**115 tools** organized by workflow: find prospects → build lists → enrich → sequence → manage CRM.
+**132 tools** organized by workflow: find prospects → build lists → enrich → sequence → manage CRM.
 
 ---
 
@@ -8,14 +8,53 @@
 
 Find the right people before reaching out.
 
-**Search for prospects**
-Search for prospects using Sales Navigator-style filters — role, seniority, company size, industry, location, and more. Use this as the starting point when you have a target persona in mind. Combine multiple filters to narrow results. Pair with enrichment tools after to get verified emails and phones.
+**get_linkedin_search_guide**
+Returns the workflow, rate limits, and full filter reference for search_linkedin. Call this before search_linkedin so you use valid filter fields and respect pacing limits.
 
-**Get prospects from connections**
+**linkedin_search_parameters**
+Resolves filter values — location, industry, company, school, and more — to the internal IDs search_linkedin needs. Call this before search_linkedin whenever a filter requires an ID rather than plain text.
+
+**search_linkedin**
+Search for prospects using classic or Sales Navigator-style filters — role, seniority, company size, industry, location, and more. Use this as the starting point when you have a target persona in mind. Combine multiple filters to narrow results. Paginate with the returned cursor. Pair with enrichment tools after to get verified emails and phones.
+
+**list_linkedin_connections**
 Pull prospects from your existing LinkedIn connections. Use this when you want to start with warm leads — people who already know you — instead of cold outreach. Returns profiles you are already connected with that match your criteria.
 
-**Find prospects from post engagement**
-Find people who liked or commented on a specific LinkedIn post. Use this to identify prospects who have already shown interest in a topic relevant to your product. Pass the post URL and get back a list of engaged profiles ready to enrich and contact.
+**check_linkedin_connection**
+Checks whether a specific LinkedIn profile is already a connection. Use this before deciding whether to send a connection request or message directly.
+
+**get_linkedin_person_posts**
+Returns recent LinkedIn posts by a specific person. Use this to find a relevant post to engage with, or to understand what a prospect has been talking about recently.
+
+**get_linkedin_post**
+Returns a single LinkedIn post by its URL — content, author, and engagement counts.
+
+**get_linkedin_post_comments**
+Returns comments on a LinkedIn post. Use this to identify prospects who have already shown interest in a topic relevant to your product.
+
+**get_linkedin_post_reactions**
+Returns reactions on a LinkedIn post. Like comments, these surface people who have already engaged with relevant content — warmer than cold search.
+
+**react_to_linkedin_post**
+Reacts to a LinkedIn post on the user's behalf. Use this to warm up a prospect before reaching out directly — always confirm the action with the user first.
+
+**comment_on_linkedin_post**
+Comments on a LinkedIn post on the user's behalf. Same warm-up use case as react_to_linkedin_post — always confirm the comment content with the user first.
+
+---
+
+## Signal Agents
+
+Surface new prospects continuously instead of via one-off search.
+
+**get_signal_agent_guide**
+Returns the setup guide for a specific signal type (linkedin_job_change, linkedin_hiring, linkedin_profile_viewers, linkedin_connections) — prerequisites, ICP fields, and allowed values. Always call this before setup_signal_agent for the signal type you're configuring.
+
+**setup_signal_agent**
+Configures a signal agent to continuously surface prospects matching an ICP — e.g. people who recently changed jobs, companies actively hiring, or profile viewers. Requires the account ID and ICP fields the matching guide specifies.
+
+**get_signal_items**
+Returns what a configured signal agent has surfaced so far. Use this to review and act on new prospects a signal agent has found.
 
 ---
 
@@ -56,11 +95,14 @@ Lists all saved views for a resource type or a specific list. Views are filtered
 **get_view**
 Returns the full configuration of a saved view — filters, sort order, visible columns. Use this to understand how a view is set up before modifying it.
 
+**get_view_creation_guide**
+Returns the step-by-step guide for creating a saved view — required fields and workflow. Always call this before create_view.
+
 **create_view**
-Creates a new saved view for a list with custom filters and sort configuration. Use this to help users set up persistent filtered views of their prospect lists.
+Creates a new saved view for a list with custom filters and column configuration. Use this to help users set up persistent filtered views of their prospect lists.
 
 **update_view**
-Updates an existing view's filter and sort configuration. Use this when the user wants to change how a saved view works.
+Updates an existing view's filter and column configuration. Use this when the user wants to change how a saved view works.
 
 ---
 
@@ -97,24 +139,57 @@ Returns the credit cost of running bulk_enrich_list before it executes. Always c
 
 ---
 
+## AI Enrichment
+
+Derive custom fields beyond standard email/phone enrichment, using an AI model against real record data.
+
+**get_ai_enrichment_guide**
+Returns the guide for creating an AI enrichment — available model tiers and their cost, template variable syntax, and the approval steps required before running. Always call this before create_ai_enrichment.
+
+**create_ai_enrichment**
+Creates a custom AI enrichment that writes its output into a CRM attribute — e.g. deriving a person's likely pain point or a company's tech stack. Requires an explicit model choice and user approval of the full prompt/field mapping before creating.
+
+**list_ai_enrichments**
+Lists configured AI enrichments in the workspace. Call this before creating a new one to check whether a similar enrichment already exists.
+
+**get_ai_enrichment**
+Returns a specific AI enrichment's configuration and results.
+
+**update_ai_enrichment**
+Updates an AI enrichment's prompt or target field.
+
+**run_ai_enrichment**
+Executes an AI enrichment against the configured records.
+
+---
+
 ## Sequences
 
 Build and run multichannel outreach sequences.
 
+**get_sequence_creation_guide**
+Returns the mandatory step-by-step guide for creating a sequence — scheduling config, account selection, node/edge structure, and writing quality rules. Always call this before create_sequence and follow every step.
+
 **get_sequence_schema**
-Returns the full schema for building sequences — all available node types (email, LinkedIn message, LinkedIn connection request, WhatsApp, wait, condition), their configuration fields, and available template variables. Call this first before create_sequence so you know the exact structure required.
+Returns the full schema for building sequences — all available node types (email, send_linkedin_connection, is_in_linkedin_network, linkedin_message, linkedin_inmail, whatsapp_message, view_linkedin_profile), their configuration fields, and available template variables. Call this before create_sequence so you know the exact structure required.
 
 **list_sequences**
 Lists all sequences in the workspace with their IDs, names, and status. Call this to find a sequence ID before enrolling someone, or to show the user what sequences exist.
+
+**list_sequence_templates**
+Lists available sequence templates. Call this when the user wants to start from a template rather than a blank sequence.
 
 **get_sequence**
 Returns the full configuration of a sequence — all nodes, edges, scheduling config, and template variables. Use this to inspect a sequence before enrolling, or to understand its structure before updating.
 
 **create_sequence**
-Creates a new sequence with any mix of node types — email, LinkedIn message, LinkedIn connection request, WhatsApp, wait steps, and conditions. Call get_sequence_schema first to get the required structure. Returns the sequence ID needed for enrollment.
+Creates a new sequence with any mix of node types — email, LinkedIn message, LinkedIn connection request, WhatsApp, wait steps, and conditions. Call get_sequence_creation_guide and get_sequence_schema first to get the required structure. Returns the sequence ID needed for enrollment.
 
 **update_sequence**
 Updates a sequence's name, scheduling configuration, or full node/edge structure. Only the fields you provide are changed. Use this to add steps, change timing, or fix template content in an existing sequence.
+
+**get_enroll_in_sequence_guide**
+Returns the mandatory step-by-step guide for enrolling a person in a sequence — identifying AI-generated vs manual nodes, the personalize-vs-as-is decision, per-channel contact-data checks, and the review-before-send gate. Always call this before enroll_in_sequence.
 
 **enroll_in_sequence**
 Enrolls a person in a sequence with freshly generated, personalized content. This is the key action that starts outreach for a contact. Pass the person's CRM ID and sequence ID. Personalization variables are filled automatically from the person's CRM profile. Always verify the person has a verified email (if the sequence includes email steps) before enrolling.
@@ -123,13 +198,22 @@ Enrolls a person in a sequence with freshly generated, personalized content. Thi
 Returns the details of a specific sequence enrollment — current step, status, scheduled send times, and generated message content. Use this to check where someone is in a sequence or to review the personalized messages that were generated.
 
 **list_enrollments**
-Lists sequence enrollments filtered by sequence or person, with optional status filter (active, completed, paused, failed). Use this to audit who is enrolled in a sequence or to find a specific person's enrollment.
+Lists sequence enrollments filtered by sequence or person, with optional status filter (active, queued, paused, invalid, verifying, skipped, cancelled). Use this to audit who is enrolled in a sequence or to find a specific person's enrollment.
+
+**get_update_enrollment_guide**
+Returns the guide for updating a sequence enrollment's status or node content — allowed status transitions and the per-node-type config shape. Always call this before update_enrollment when changing node content or an account.
 
 **update_enrollment**
-Updates a sequence enrollment — pause, resume, or change its status. Use this when the user wants to stop or pause outreach for a specific contact.
+Updates a sequence enrollment — change its status (e.g. pause, cancel) and/or fix content for pending nodes. Use this when the user wants to stop, pause, or correct outreach for a specific contact.
+
+**set_enrollment_node_content**
+Sets personalized content for a specific pending node in an enrollment. Use this when drafting manual-node content as part of the enrollment review flow.
 
 **retry_enrollment**
 Retries a failed or invalid sequence enrollment. Use this when an enrollment failed due to a missing email, sending account issue, or other recoverable error that has since been resolved.
+
+**resolve_invalid_enrollments**
+Returns guidance for fixing enrollments that came back with an invalid status. Call this when handling an enrollment's exit_reason.
 
 **get_sequence_analytics**
 Returns detailed analytics and conversion funnel for a sequence — sent, delivered, opened, clicked, replied, and conversion rates per step. Use this to evaluate sequence performance or to help the user decide which sequences are working.
@@ -146,17 +230,17 @@ Returns current load stats for sending accounts — how many emails or messages 
 
 Read, draft, send, and manage emails.
 
-**inbox_manager_config**
-Returns the Inbox Manager configuration for the current workspace — reply detection settings, auto-categorization rules, and connected accounts. Call this to understand how the inbox is set up before managing emails.
-
 **list_emails**
 Lists emails in the workspace with optional filters — by person, account, status, date range, or search query. Use this to find emails for a specific contact or to review recent outreach.
 
 **get_email**
 Returns a single email by ID — subject, body, recipients, send status, open tracking, and thread info. Use this to read the full content of an email or to get thread context before replying.
 
+**get_draft_email_guide**
+Returns the mandatory step-by-step guide for drafting an email — account selection, signature check, recipient resolution, and content format. Always call this before draft_email.
+
 **draft_email**
-Creates a draft email in the workspace. Use this to prepare an email for review before sending. Returns the draft ID needed for send_email.
+Creates a draft email (HTML body) in the workspace. Use this to prepare an email for review before sending. Returns the draft ID and a shareable URL needed for send_email.
 
 **send_email**
 Sends a drafted email by its ID. Always draft first and confirm content with the user before calling send_email. This action cannot be undone.
@@ -186,7 +270,25 @@ Returns workspace-level email open analytics — aggregate open rates, click rat
 
 ## Outreach (LinkedIn & WhatsApp)
 
-Manage conversations across LinkedIn and WhatsApp.
+Send and manage conversations across LinkedIn and WhatsApp.
+
+**send_connection_request**
+Sends a LinkedIn connection request, with an optional note. Omitting the note allows a materially higher daily send volume — ask the user before including one.
+
+**send_linkedin_message**
+Sends a direct message to an existing LinkedIn connection.
+
+**send_inmail**
+Sends a premium/InMail-style LinkedIn message. Requires a premium LinkedIn account (Sales Navigator, Recruiter, or Premium Business) and consumes an InMail credit. Don't use this on an existing 1st-degree connection — use send_linkedin_message instead.
+
+**send_whatsapp_message**
+Sends a WhatsApp message to a contact.
+
+**send_draft_message**
+Sends a previously generated message draft (e.g. AI-generated enrollment content awaiting review). Always show the draft's actual content to the user before calling this.
+
+**delete_message_draft**
+Deletes a message draft that's no longer needed.
 
 **list_message_threads**
 Lists LinkedIn and WhatsApp conversation threads with recent message previews. Use this to find threads for a specific contact or to review recent conversations across channels.
@@ -199,54 +301,6 @@ Lists all connected LinkedIn and WhatsApp accounts in the workspace. Use this to
 
 **set_primary_account**
 Sets a default LinkedIn or WhatsApp account for sending. Use this when the user has multiple connected accounts and wants to set a preferred one for outreach.
-
----
-
-## AI Automations
-
-Create and run sub-agents that operate autonomously on the workspace.
-
-**list_subagents**
-Lists all enabled sub-agents in the workspace with their IDs, names, and descriptions. Call this first to find a sub-agent ID before creating tasks or checking its configuration.
-
-**get_subagent**
-Returns the full configuration of a sub-agent — its instructions, enabled tools, schedule, and status. Use this to understand what a sub-agent is set up to do before creating tasks for it.
-
-**create_subagent**
-Creates a new sub-agent with a name, description, and instructions. Sub-agents run autonomously to complete tasks like prospecting, enriching lists, or following up with contacts. Define the sub-agent's goals and constraints clearly in the instructions field.
-
-**update_subagent**
-Updates an existing sub-agent's name, instructions, or enabled tools. Use this to change what a sub-agent does or to refine its instructions based on performance.
-
-**get_worker_instructions**
-Returns instructions for human-initiated sub-agent sessions — what the agent should do when a user triggers it manually. Call this at the start of a sub-agent session to load the correct context and goals.
-
-**get_executor_instructions**
-Returns instructions for automated or scheduled execution of pending sub-agent tasks. Call this when running tasks on a schedule or in batch mode without a human in the loop.
-
-**get_available_mcp_tools**
-Lists all available MCP tools with names and descriptions. Use this inside a sub-agent session when you need to know what tools are available to accomplish a task.
-
-**bulk_create_subagent_tasks**
-Creates multiple tasks for a single sub-agent in one call. Use this to queue a batch of work items — for example, a list of LinkedIn URLs to enrich, or a set of contacts to sequence. More efficient than creating tasks one by one.
-
-**list_subagent_tasks**
-Lists sub-agent tasks with optional filters by sub-agent ID and status. Use this to see what tasks are pending, in progress, or completed for a given sub-agent.
-
-**get_subagent_task**
-Returns the full details of a sub-agent task — its input, current status, execution log, and result. Use this to inspect what a sub-agent did or to debug a failed task.
-
-**claim_subagent_task**
-Claims an open task to start working on it. Call this at the start of automated execution to mark a task as in progress and prevent other agents from picking it up simultaneously.
-
-**append_task_log**
-Appends a log entry to a running task's execution log. Use this during task execution to record what steps were taken, what was found, or what decisions were made. Helps with debugging and auditing.
-
-**complete_subagent_task**
-Marks a task as completed with optional result data. Call this after successfully finishing a task. Pass a summary of what was accomplished so the result is visible in the task log.
-
-**fail_subagent_task**
-Marks a task as failed with an error message. Call this when a task cannot be completed due to an unrecoverable error. Include a clear error message so the cause is visible in the task log.
 
 ---
 
@@ -326,8 +380,11 @@ Lists all dashboards in the workspace with their IDs and names. Use this to find
 **create_dashboard**
 Creates a new dashboard. Use this when the user wants a dedicated view for a new set of reports.
 
+**get_report_guide**
+Returns the guide for validate_and_preview_report — prerequisites, and the exact query/chart/filter shape. Always call this before configuring a report.
+
 **validate_and_preview_report**
-Validates a report configuration and returns a 100-row data preview. Always call this before create_report to catch configuration errors and confirm the data looks correct before saving.
+Validates a report configuration and returns a data preview. Always call this before create_report to catch configuration errors and confirm the data looks correct before saving.
 
 **create_report**
 Saves a report permanently to a dashboard. Call validate_and_preview_report first. Returns the report ID.
@@ -342,13 +399,13 @@ Executes a saved report and returns its full data rows. Use this to fetch the la
 Create, search, and update people, companies, and deals.
 
 **record_schema**
-Returns the attribute schema for a CRM resource type — all available fields, their types, and whether they are required. Call this before create_record or update_record to know exactly which fields are available.
+Returns the attribute schema for a CRM resource type — all available attribute titles, their types, and whether they are required. Call this before create_record or update_record to know exactly which fields are available; pass attribute titles as keys in the attributes dict.
 
 **filter_guide**
-Returns the filter, sort, and list_id reference for all list_records calls. Call this when you need to build a complex filter query — it explains the filter syntax and available operators.
+Returns the filter, sort, and list_id reference for all list_records calls. Call this when you need to build a complex filter query — it explains the FilterGroup syntax, available operators, and how to resolve a saved view by name.
 
 **list_records**
-Lists CRM records for any resource type — people, companies, or deals — with optional filters, sort, and pagination. Use this to search the CRM, find records matching criteria, or get a list of records to update.
+Lists CRM records for any resource type — people, companies, or deals — with optional filters, sort, and pagination. Use this to search the CRM, find records matching criteria, or get a list of records to update. Pass known IDs via `ids` instead of looping single-record fetches.
 
 **create_record**
 Creates a new CRM record — person, company, or deal. Call record_schema first to know the required and optional fields. Use add_people_to_list or add_companies_to_list instead if you are adding prospects from LinkedIn URLs.
@@ -397,6 +454,21 @@ Associates a person (contact) with a deal. Use this to link a contact to an oppo
 
 **remove_person_from_deal**
 Removes a person's association with a deal. Use this when a contact is no longer involved in an opportunity.
+
+**list_attributes**
+Lists custom attributes defined for a resource type. Use this to check whether a suitable field already exists before creating a new one.
+
+**get_attribute**
+Returns a single custom attribute's configuration — type, allowed values, and whether it's editable.
+
+**create_attribute**
+Creates a new custom attribute for a resource type (text, select, multiselect, number, boolean, etc.). Confirm the resource type and field type with the user first.
+
+**update_attribute**
+Updates an existing custom attribute's configuration.
+
+**delete_attribute**
+Deletes a custom attribute. Confirm with the user before deleting — existing record data on that field may be affected.
 
 ---
 
